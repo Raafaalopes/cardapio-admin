@@ -2,11 +2,25 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 
 export async function GET() {
+  if (!process.env.DATABASE_URL) {
+    return NextResponse.json(
+      { error: "DATABASE_URL não configurada" },
+      { status: 500 }
+    );
+  }
+
   const cardapios = await prisma.cardapio.findMany();
   return NextResponse.json(cardapios);
 }
 
 export async function POST(request: NextRequest) {
+  if (!process.env.DATABASE_URL) {
+    return NextResponse.json(
+      { error: "DATABASE_URL não configurada" },
+      { status: 500 }
+    );
+  }
+
   const { diaSemana, tipo, pratoPrincipal, acompanhamento } =
     await request.json();
 
@@ -18,6 +32,13 @@ export async function POST(request: NextRequest) {
 }
 
 export async function PUT(request: NextRequest) {
+  if (!process.env.DATABASE_URL) {
+    return NextResponse.json(
+      { error: "DATABASE_URL não configurada" },
+      { status: 500 }
+    );
+  }
+
   const { id, diaSemana, tipo, pratoPrincipal, acompanhamento } =
     await request.json();
 
@@ -37,6 +58,12 @@ export async function PUT(request: NextRequest) {
 }
 
 export async function DELETE(request: NextRequest) {
+  if (!process.env.DATABASE_URL) {
+    return NextResponse.json(
+      { error: "DATABASE_URL não configurada" },
+      { status: 500 }
+    );
+  }
   const url = new URL(request.url);
   const id = url.searchParams.get("id");
 
